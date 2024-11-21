@@ -1,4 +1,7 @@
 package com.example.greenshadowbackendspringboot.dao;
 
-public interface FieldDao {
+import com.example.greenshadowbackendspringboot.entity.impl.FieldEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface FieldDao extends JpaRepository<FieldEntity, String> {
 }
