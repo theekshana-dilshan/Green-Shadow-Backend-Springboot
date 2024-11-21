@@ -9,4 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class VehicleDTO implements VehicleStatus {
+    private String vehicleCode;
+    private String licensePlateNumber;
+    private String vehicleCategory;
+    private String fuelType;
+    private String status;
+    private StaffDTO allocatedStaffMemberDetails;
+    private String remarks;
 }

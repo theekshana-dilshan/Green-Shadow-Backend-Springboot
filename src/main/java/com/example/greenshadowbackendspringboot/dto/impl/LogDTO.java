@@ -19,5 +19,4 @@ public class LogDTO implements LogStatus {
     private List<FieldDTO> fieldList;
     private List<CropDTO> cropList;
     private List<StaffDTO> staffList;
-
 }
