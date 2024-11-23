@@ -5,9 +5,7 @@ import com.example.greenshadowbackendspringboot.dto.impl.VehicleDTO;
 import com.example.greenshadowbackendspringboot.entity.Gender;
 import com.example.greenshadowbackendspringboot.entity.Role;
 import com.example.greenshadowbackendspringboot.entity.SuperEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,7 +24,8 @@ public class StaffEntity implements SuperEntity {
     private String firstName;
     private String lastName;
     private String designation;
-    private Enum<Gender> genderEnum;
+    @Enumerated(EnumType.STRING)
+    private Gender genderEnum;
     private Date joinedDate;
     private Date dateOfBirth;
     private String addressLine01;
@@ -36,7 +35,15 @@ public class StaffEntity implements SuperEntity {
     private String addressLine05;
     private String contactNo;
     private String email;
-    private Enum<Role> role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
+    @ManyToMany
+    @JoinTable(
+            name = "staff_field",
+            joinColumns = @JoinColumn(name = "staffId"),
+            inverseJoinColumns = @JoinColumn(name = "fieldCode")
+    )
     private List<FieldDTO> fieldList;
+    @OneToOne
     private List<VehicleDTO> vehicleList;
 }

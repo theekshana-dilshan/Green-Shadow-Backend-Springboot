@@ -1,6 +1,12 @@
 package com.example.greenshadowbackendspringboot.service.impl;
 
+import com.example.greenshadowbackendspringboot.customStatusCodes.SelectedErrorStatus;
+import com.example.greenshadowbackendspringboot.dao.UserDao;
+import com.example.greenshadowbackendspringboot.dto.UserStatus;
+import com.example.greenshadowbackendspringboot.dto.impl.UserDTO;
+import com.example.greenshadowbackendspringboot.entity.impl.UserEntity;
 import com.example.greenshadowbackendspringboot.exception.DataPersistException;
+import com.example.greenshadowbackendspringboot.exception.UserNotFoundException;
 import com.example.greenshadowbackendspringboot.service.UserService;
 import com.example.greenshadowbackendspringboot.util.Mapping;
 import jakarta.transaction.Transactional;
@@ -14,7 +20,7 @@ import java.util.Optional;
 @Service
 @Transactional
 public class UserServiceIMPL implements UserService {
-    /*@Autowired
+    @Autowired
     private UserDao userDao;
     @Autowired
     private Mapping mapping;
@@ -34,39 +40,37 @@ public class UserServiceIMPL implements UserService {
     }
 
     @Override
-    public UserStatus getUser(String userId) {
-        if(userDao.existsById(userId)){
-            UserEntity selectedUser = userDao.getReferenceById(userId);
+    public UserStatus getUser(String email) {
+        if(userDao.existsByEmail(email)){
+            UserEntity selectedUser = userDao.getReferenceById(email);
             return mapping.toUserDTO(selectedUser);
         }else {
-            return new SelectedUserAndNoteErrorStatus(2, "User with id " + userId + " not found");
+            return new SelectedErrorStatus(2, "User with id " + email + " not found");
         }
     }
 
     @Override
-    public void deleteUser(String userId) {
-        Optional<UserEntity> existsUser = userDao.findById(userId);
+    public void deleteUser(String email) {
+        Optional<UserEntity> existsUser = userDao.findByEmail(email);
         if (!existsUser.isPresent()){
-            throw new UserNotFoundException("User with id " + userId + " not found");
+            throw new UserNotFoundException("User with id " + email + " not found");
         }else {
-            userDao.deleteById(userId);
+            userDao.deleteByEmail(email);
         }
     }
 
     @Override
-    public void updateUser(String userId, UserDTO userDTO) {
-        Optional<UserEntity> tempUser = userDao.findById(userId);
+    public void updateUser(String email, UserDTO userDTO) {
+        Optional<UserEntity> tempUser = userDao.findByEmail(email);
         if (tempUser.isPresent()){
-            tempUser.get().setFirstName(userDTO.getFirstName());
-            tempUser.get().setLastName(userDTO.getLastName());
             tempUser.get().setEmail(userDTO.getEmail());
             tempUser.get().setPassword(userDTO.getPassword());
-            tempUser.get().setProfilePic(userDTO.getProfilePic());
+            tempUser.get().setRole(userDTO.getRole());
         }
     }
 
     @Override
     public UserDetailsService userDetailService() {
         return    userName-> userDao.findByEmail(userName).orElseThrow(()-> new UserNotFoundException("User not found"));
-    }*/
+    }
 }

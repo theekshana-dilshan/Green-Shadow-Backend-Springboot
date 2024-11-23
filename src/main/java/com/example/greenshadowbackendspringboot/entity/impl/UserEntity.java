@@ -2,9 +2,7 @@ package com.example.greenshadowbackendspringboot.entity.impl;
 
 import com.example.greenshadowbackendspringboot.entity.Role;
 import com.example.greenshadowbackendspringboot.entity.SuperEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,7 +20,8 @@ public class UserEntity implements SuperEntity, UserDetails {
     @Id
     private String email;
     private String password;
-    private Enum<Role> role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 public class UserDTO implements UserStatus {
     private String email;
     private String password;
-    private Enum<Role> role;
+    private  Role role;
 }

@@ -4,6 +4,7 @@ import com.example.greenshadowbackendspringboot.dto.impl.StaffDTO;
 import com.example.greenshadowbackendspringboot.entity.SuperEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,6 +22,7 @@ public class VehicleEntity implements SuperEntity {
     private String vehicleCategory;
     private String fuelType;
     private String status;
+    @OneToOne
     private StaffDTO allocatedStaffMemberDetails;
     private String remarks;
 }

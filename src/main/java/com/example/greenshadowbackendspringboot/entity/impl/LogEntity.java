@@ -4,9 +4,7 @@ import com.example.greenshadowbackendspringboot.dto.impl.CropDTO;
 import com.example.greenshadowbackendspringboot.dto.impl.FieldDTO;
 import com.example.greenshadowbackendspringboot.dto.impl.StaffDTO;
 import com.example.greenshadowbackendspringboot.entity.SuperEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,8 +22,15 @@ public class LogEntity implements SuperEntity {
     private String logCode;
     private Date logDate;
     private String observation;
+    @Column(columnDefinition = "LONGTEXT")
     private String observedImage;
+    @ManyToOne
+    @JoinColumn(name = "fieldCode",nullable = false)
     private List<FieldDTO> fieldList;
+    @ManyToOne
+    @JoinColumn(name = "cropCode",nullable = false)
     private List<CropDTO> cropList;
+    @ManyToOne
+    @JoinColumn(name = "staffId",nullable = false)
     private List<StaffDTO> staffList;
 }

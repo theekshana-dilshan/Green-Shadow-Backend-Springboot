@@ -18,7 +18,7 @@ public class StaffDTO implements StaffStatus {
     private String firstName;
     private String lastName;
     private String designation;
-    private Enum<Gender> genderEnum;
+    private Gender genderEnum;
     private Date joinedDate;
     private Date dateOfBirth;
     private String addressLine01;
@@ -28,7 +28,7 @@ public class StaffDTO implements StaffStatus {
     private String addressLine05;
     private String contactNo;
     private String email;
-    private Enum<Role> role;
+    private Role role;
     private List<FieldDTO> fieldList;
     private List<VehicleDTO> vehicleList;
 }
