@@ -22,7 +22,7 @@ public class FieldController {
     @Autowired
     private FieldService fieldService;
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> saveField(@RequestBody FieldDTO fieldDTO) {
         try {

@@ -27,7 +27,7 @@ public class JWTServiceIMPL implements JWTService {
     }
 
     @Override
-    public String generateToke(UserDetails userDetails) {
+    public String generateToken(UserDetails userDetails) {
         return genToken(new HashMap<>(),userDetails);
     }
 
