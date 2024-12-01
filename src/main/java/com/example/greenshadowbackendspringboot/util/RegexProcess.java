@@ -38,4 +38,10 @@ public class RegexProcess {
         Pattern regexPattern = Pattern.compile(regexForVehicleID);
         return regexPattern.matcher(vehicleCode).matches();
     }
+
+    public static boolean userEmailMatcher(String email) {
+        String regexForUserEmail = "^VEHICLE-[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$";
+        Pattern regexPattern = Pattern.compile(regexForUserEmail);
+        return regexPattern.matcher(email).matches();
+    }
 }

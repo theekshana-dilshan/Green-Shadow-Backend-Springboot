@@ -1,5 +1,6 @@
 package com.example.greenshadowbackendspringboot.controller;
 
+import com.example.greenshadowbackendspringboot.customStatusCodes.SelectedErrorStatus;
 import com.example.greenshadowbackendspringboot.dto.UserStatus;
 import com.example.greenshadowbackendspringboot.dto.impl.UserDTO;
 import com.example.greenshadowbackendspringboot.exception.UserNotFoundException;
@@ -23,20 +24,20 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping(value = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserStatus getSelectedUser(@PathVariable("userId") String userId){
-        if(!RegexProcess.userIdMatcher(userId)){
-            return new SelectedUserAndNoteErrorStatus(1,"User ID is not valid");
+    @GetMapping(value = "/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public UserStatus getSelectedUser(@PathVariable("email") String email){
+        if(!RegexProcess.userEmailMatcher(email)){
+            return new SelectedErrorStatus(1,"User email is not valid");
         }
-        return userService.getUser(userId);
+        return userService.getUser(email);
     }
-    @DeleteMapping(value = "/{userId}")
-    public ResponseEntity<Void> deleteUser(@PathVariable("userId") String userId){
+    @DeleteMapping(value = "/{email}")
+    public ResponseEntity<Void> deleteUser(@PathVariable("email") String email){
         try {
-            if(!RegexProcess.userIdMatcher(userId)){
+            if(!RegexProcess.userEmailMatcher(email)){
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
-            userService.deleteUser(userId);
+            userService.deleteUser(email);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }catch (UserNotFoundException e){
             e.printStackTrace();
@@ -52,7 +53,7 @@ public class UserController {
         return userService.getAllUsers();
     }
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PutMapping(value = "/{userId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(value = "/{email}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void updateUser(
             @RequestPart ("email") String email,
             @RequestPart ("password") String password
@@ -60,6 +61,6 @@ public class UserController {
         UserDTO buildUserDTO = new UserDTO();
         buildUserDTO.setEmail(email);
         buildUserDTO.setPassword(password);
-        userService.updateUser(userId,buildUserDTO);
+        userService.updateUser(email,buildUserDTO);
     }
 }
