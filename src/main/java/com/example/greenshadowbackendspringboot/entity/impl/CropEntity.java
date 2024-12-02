@@ -7,21 +7,27 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Entity
-@Table(name = "crop")
+@Table(name = "cropEntity")
 public class CropEntity implements SuperEntity {
     @Id
-    private String cropCode;
-    private String cropCommonName;
-    private String cropScientificName;
+    String cropCode;
+    String commonName;
+    String scientificName;
     @Column(columnDefinition = "LONGTEXT")
-    private String cropImage;
-    private String category;
-    private String cropSeason;
-    @ManyToOne
-    @JoinColumn(name = "fieldCode",nullable = false)
-    private FieldEntity field;
+    String image;
+    String category;
+    String season;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "fieldCode", nullable = false)
+    private FieldEntity fieldEntity;
+
+
+
+    @OneToOne(mappedBy = "cropEntity" )
+    LogEntity log;
 }

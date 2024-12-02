@@ -20,30 +20,37 @@ import java.util.List;
 @Table(name = "staff")
 public class StaffEntity implements SuperEntity {
     @Id
-    private String staffId;
-    private String firstName;
-    private String lastName;
-    private String designation;
+    String id;
+    String firstName;
+    String lastName;
+    String designation;
     @Enumerated(EnumType.STRING)
-    private Gender genderEnum;
-    private Date joinedDate;
-    private Date dateOfBirth;
-    private String addressLine01;
-    private String addressLine02;
-    private String addressLine03;
-    private String addressLine04;
-    private String addressLine05;
-    private String contactNo;
-    private String email;
+    Gender gender;
+    Date joinedDate;
+    Date dob;
+    String address;
+    String contact;
+    String email;
     @Enumerated(EnumType.STRING)
-    private Role role;
+    Role role;
+
     @ManyToMany
     @JoinTable(
             name = "staff_field",
-            joinColumns = @JoinColumn(name = "staffId"),
+            joinColumns = @JoinColumn(name = "id"),
             inverseJoinColumns = @JoinColumn(name = "fieldCode")
     )
-    private List<FieldDTO> fieldList;
-    @OneToOne
-    private List<VehicleDTO> vehicleList;
+    List<FieldEntity> fields;
+
+    @OneToMany(mappedBy = "staff")
+    List<VehicleEntity> vehicleEntities;
+
+    @OneToMany(mappedBy = "staff")
+    List<EquipmentEntity> equipmentEntityList;
+
+    @OneToOne(mappedBy = "staffEntity")
+    LogEntity log;
+
+    public void setRole(Role role) {
+    }
 }

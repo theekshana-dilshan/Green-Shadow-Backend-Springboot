@@ -11,28 +11,28 @@ import lombok.NoArgsConstructor;
 import java.awt.*;
 import java.util.List;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Entity
-@Table(name = "field")
 public class FieldEntity implements SuperEntity {
     @Id
-    private String fieldCode;
-    private String fieldName;
-    private Point fieldLocation;
-    private Double sizeOfTheField;
+    String fieldCode;
+    String fieldName;
+    String fieldLocation;
+    double  fieldSize;
+    @Column(columnDefinition = "LONGTEXT")
+    String fieldImage;
+    @OneToMany(mappedBy = "fieldEntity", cascade = CascadeType.ALL)
+    List<CropEntity> cropEntityList;
+
+    @ManyToMany(mappedBy = "fields", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    List<StaffEntity> staffEntityList;
+
+
     @OneToMany(mappedBy = "field")
-    private List<CropDTO> cropList;
-    @ManyToMany
-    @JoinTable(
-            name = "staff_field",
-            joinColumns = @JoinColumn(name = "fieldCode"),
-            inverseJoinColumns = @JoinColumn(name = "staffId")
-    )
-    private List<StaffDTO> staffList;
-    @Column(columnDefinition = "LONGTEXT")
-    private String fieldImage1;
-    @Column(columnDefinition = "LONGTEXT")
-    private String fieldImage2;
+    List<EquipmentEntity> equipmentEntityList;
+
+    @OneToOne(mappedBy = "fieldEntity" )
+    LogEntity log;
 }

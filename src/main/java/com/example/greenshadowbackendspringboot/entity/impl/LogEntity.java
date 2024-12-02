@@ -16,21 +16,28 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "logDetails")
+@Table(name = "monitorLog")
 public class LogEntity implements SuperEntity {
+
     @Id
-    private String logCode;
-    private Date logDate;
-    private String observation;
+    String logCode;
+
+    Date date;
+    String observation;
+
     @Column(columnDefinition = "LONGTEXT")
-    private String observedImage;
-    @ManyToOne
-    @JoinColumn(name = "fieldCode",nullable = false)
-    private List<FieldDTO> fieldList;
-    @ManyToOne
-    @JoinColumn(name = "cropCode",nullable = false)
-    private List<CropDTO> cropList;
-    @ManyToOne
-    @JoinColumn(name = "staffId",nullable = false)
-    private List<StaffDTO> staffList;
+    String observationImage;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "field_code", referencedColumnName = "fieldCode")
+    FieldEntity fieldEntity;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "crop_code", referencedColumnName = "cropCode")
+    CropEntity cropEntity;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "staff_id", referencedColumnName = "id")
+    StaffEntity staffEntity;
+
 }
