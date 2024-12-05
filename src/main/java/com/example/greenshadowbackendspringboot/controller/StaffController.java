@@ -11,12 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/staff")
+@CrossOrigin
 public class StaffController {
 
     @Autowired
@@ -24,6 +26,7 @@ public class StaffController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMINISTRATIVE')")
     public ResponseEntity<Void> saveStaff(@RequestBody StaffDTO staffDTO) {
         try {
             staffService.saveStaff(staffDTO);
@@ -36,6 +39,8 @@ public class StaffController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
     @GetMapping(value = "/{staffId}",produces = MediaType.APPLICATION_JSON_VALUE)
     public CustomStatus getSelectedStaff(@PathVariable("staffId") String staffId){
         if (!RegexProcess.staffIdMatcher(staffId)) {
@@ -43,11 +48,16 @@ public class StaffController {
         }
         return staffService.getStaff(staffId);
     }
+
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<StaffDTO> getALlStaffs(){
         return staffService.getAllStaff();
     }
+
+
     @DeleteMapping(value = "/{staffId}")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMINISTRATIVE')")
     public ResponseEntity<Void> deleteStaff(@PathVariable ("staffId") String staffId){
         try {
             if (!RegexProcess.staffIdMatcher(staffId)) {
@@ -63,7 +73,10 @@ public class StaffController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
     @PutMapping(value = "/{staffId}")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMINISTRATIVE')")
     public ResponseEntity<Void> updateStaff(@PathVariable ("staffId") String staffId,
                                            @RequestBody StaffDTO updatedStaffDTO){
         //validations

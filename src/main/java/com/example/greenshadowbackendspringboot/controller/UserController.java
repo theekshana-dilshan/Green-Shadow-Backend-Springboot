@@ -19,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/users")
+@CrossOrigin
 public class UserController {
 
     @Autowired
@@ -28,6 +29,8 @@ public class UserController {
     public UserDTO getSelectedUser(@PathVariable("email") String email){
         return userService.getUser(email);
     }
+
+
     @DeleteMapping(value = "/{email}")
     public ResponseEntity<Void> deleteUser(@PathVariable("email") String email){
         try {
@@ -44,11 +47,15 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMINISTRATIVE')")
     public List<UserDTO> getAllUsers(){
         return userService.getAllUsers();
     }
+
+
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping(value = "/{email}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void updateUser(

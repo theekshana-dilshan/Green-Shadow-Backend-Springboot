@@ -12,6 +12,6 @@ public interface UserService {
     UserDTO getUser(String email);
     void deleteUser(String email);
     void updateUser(String email, UserDTO userDTO);
-    UserDetailsService userDetailService();
+    UserDetailsService userDetailsService();
     UserDTO getActiveUsers();
 }

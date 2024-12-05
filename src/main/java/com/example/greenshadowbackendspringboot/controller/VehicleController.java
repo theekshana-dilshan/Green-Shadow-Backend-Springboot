@@ -11,12 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/vehicle")
+@CrossOrigin
 public class VehicleController {
 
     @Autowired
@@ -24,6 +26,7 @@ public class VehicleController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMINISTRATIVE')")
     public ResponseEntity<Void> saveVehicle(@RequestBody VehicleDTO vehicleDTO) {
         try {
             vehicleService.saveVehicle(vehicleDTO);
@@ -36,6 +39,8 @@ public class VehicleController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
     @GetMapping(value = "/{vehicleCode}",produces = MediaType.APPLICATION_JSON_VALUE)
     public CustomStatus getSelectedVehicle(@PathVariable("vehicleCode") String vehicleCode){
         if (!RegexProcess.vehicleIdMatcher(vehicleCode)) {
@@ -43,11 +48,16 @@ public class VehicleController {
         }
         return vehicleService.getVehicle(vehicleCode);
     }
+
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<VehicleDTO> getALlVehicles(){
         return vehicleService.getAllVehicle();
     }
+
+
     @DeleteMapping(value = "/{vehicleCode}")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMINISTRATIVE')")
     public ResponseEntity<Void> deleteVehicle(@PathVariable ("vehicleCode") String vehicleCode){
         try {
             if (!RegexProcess.vehicleIdMatcher(vehicleCode)) {
@@ -63,7 +73,10 @@ public class VehicleController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
     @PutMapping(value = "/{vehicleCode}")
+    @PreAuthorize("hasAnyRole('MANAGER', 'ADMINISTRATIVE')")
     public ResponseEntity<Void> updateVehicle(@PathVariable ("vehicleCode") String vehicleCode,
                                            @RequestBody VehicleDTO updatedNoteDTO){
         //validations

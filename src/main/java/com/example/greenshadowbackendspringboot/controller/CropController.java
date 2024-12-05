@@ -11,19 +11,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/crop")
+@CrossOrigin
 public class CropController {
 
     @Autowired
     private CropService cropService;
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<Void> saveCrop(@RequestBody CropDTO cropDTO) {
         try {
             cropService.saveCrop(cropDTO);
@@ -36,6 +39,8 @@ public class CropController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
     @GetMapping(value = "/{cropCode}",produces = MediaType.APPLICATION_JSON_VALUE)
     public CustomStatus getSelectedCrop(@PathVariable("cropCode") String cropCode){
         if (!RegexProcess.cropIdMatcher(cropCode)) {
@@ -43,11 +48,16 @@ public class CropController {
         }
         return cropService.getCrop(cropCode);
     }
+
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<CropDTO> getALlCrops(){
         return cropService.getAllCrops();
     }
+
+
     @DeleteMapping(value = "/{cropCode}")
+    @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<Void> deleteCrop(@PathVariable ("cropCode") String cropCode){
         try {
             if (!RegexProcess.cropIdMatcher(cropCode)) {
@@ -63,7 +73,10 @@ public class CropController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
     @PutMapping(value = "/{cropCode}")
+    @PreAuthorize("hasRole('MANAGER')")
     public ResponseEntity<Void> updateCrop(@PathVariable ("cropCode") String cropCode,
                                            @RequestBody CropDTO updatedCropDTO){
         //validations

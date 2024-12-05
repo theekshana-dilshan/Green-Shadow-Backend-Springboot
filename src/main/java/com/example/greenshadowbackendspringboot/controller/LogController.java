@@ -11,12 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/logs")
+@CrossOrigin
 public class LogController {
 
     @Autowired
@@ -24,6 +26,7 @@ public class LogController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAnyRole('MANAGER', 'SCIENTIST')")
     public ResponseEntity<Void> saveLog(@RequestBody LogDTO logDTO) {
         try {
             logService.saveLog(logDTO);
@@ -36,6 +39,8 @@ public class LogController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
     @GetMapping(value = "/{logCode}",produces = MediaType.APPLICATION_JSON_VALUE)
     public CustomStatus getSelectedLog(@PathVariable("logCode") String logCode){
         if (!RegexProcess.logIdMatcher(logCode)) {
@@ -43,10 +48,14 @@ public class LogController {
         }
         return logService.getLog(logCode);
     }
+
+
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<LogDTO> getALlLogs(){
         return logService.getAllLogs();
     }
+
+
     @DeleteMapping(value = "/{logCode}")
     public ResponseEntity<Void> deleteLog(@PathVariable ("logCode") String logCode){
         try {
@@ -63,6 +72,8 @@ public class LogController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
     @PutMapping(value = "/{logCode}")
     public ResponseEntity<Void> updateLog(@PathVariable ("logCode") String logCode,
                                            @RequestBody LogDTO updatedLogDTO){
