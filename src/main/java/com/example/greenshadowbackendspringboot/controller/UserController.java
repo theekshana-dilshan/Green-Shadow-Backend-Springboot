@@ -1,7 +1,7 @@
 package com.example.greenshadowbackendspringboot.controller;
 
 import com.example.greenshadowbackendspringboot.customStatusCodes.SelectedErrorStatus;
-import com.example.greenshadowbackendspringboot.dto.UserStatus;
+import com.example.greenshadowbackendspringboot.dto.CustomStatus;
 import com.example.greenshadowbackendspringboot.dto.impl.UserDTO;
 import com.example.greenshadowbackendspringboot.exception.UserNotFoundException;
 import com.example.greenshadowbackendspringboot.service.UserService;
@@ -25,10 +25,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping(value = "/{email}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserStatus getSelectedUser(@PathVariable("email") String email){
-        if(!RegexProcess.userEmailMatcher(email)){
-            return new SelectedErrorStatus(1,"User email is not valid");
-        }
+    public UserDTO getSelectedUser(@PathVariable("email") String email){
         return userService.getUser(email);
     }
     @DeleteMapping(value = "/{email}")
@@ -48,7 +45,7 @@ public class UserController {
         }
     }
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMINISTRATIVE')")
     public List<UserDTO> getAllUsers(){
         return userService.getAllUsers();
     }

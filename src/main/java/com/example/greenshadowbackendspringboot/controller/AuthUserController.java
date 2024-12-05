@@ -1,13 +1,13 @@
 package com.example.greenshadowbackendspringboot.controller;
 
 import com.example.greenshadowbackendspringboot.dto.impl.UserDTO;
-import com.example.greenshadowbackendspringboot.entity.Role;
 import com.example.greenshadowbackendspringboot.exception.DataPersistException;
 import com.example.greenshadowbackendspringboot.secure.JWTAuthResponse;
 import com.example.greenshadowbackendspringboot.secure.SignIn;
 import com.example.greenshadowbackendspringboot.service.AuthService;
 import com.example.greenshadowbackendspringboot.service.UserService;
 import com.example.greenshadowbackendspringboot.util.AppUtil;
+import com.example.greenshadowbackendspringboot.util.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,7 +34,7 @@ public class AuthUserController {
             UserDTO buildUserDTO = new UserDTO();
             buildUserDTO.setEmail(email);
             buildUserDTO.setPassword(passwordEncoder.encode(password));
-            buildUserDTO.setRole(Role.valueOf(role));
+            buildUserDTO.setUserRole(Role.valueOf(role));
             return ResponseEntity.ok(authService.signUp(buildUserDTO));
         } catch (DataPersistException e) {
             e.printStackTrace();

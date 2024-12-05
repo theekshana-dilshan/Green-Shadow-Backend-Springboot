@@ -1,8 +1,10 @@
 package com.example.greenshadowbackendspringboot.dto.impl;
 
-import com.example.greenshadowbackendspringboot.dto.StaffStatus;
-import com.example.greenshadowbackendspringboot.entity.Gender;
-import com.example.greenshadowbackendspringboot.entity.Role;
+import com.example.greenshadowbackendspringboot.dto.CustomStatus;
+import com.example.greenshadowbackendspringboot.util.Gender;
+import com.example.greenshadowbackendspringboot.util.Role;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,25 +12,22 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 import java.util.List;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class StaffDTO implements StaffStatus {
-    private String staffId;
-    private String firstName;
-    private String lastName;
-    private String designation;
-    private Gender genderEnum;
-    private Date joinedDate;
-    private Date dateOfBirth;
-    private String addressLine01;
-    private String addressLine02;
-    private String addressLine03;
-    private String addressLine04;
-    private String addressLine05;
-    private String contactNo;
-    private String email;
-    private Role role;
-    private List<FieldDTO> fieldList;
-    private List<VehicleDTO> vehicleList;
+public class StaffDTO implements CustomStatus {
+    String id;
+    String firstName;
+    String lastName;
+    String designation;
+    @Enumerated(EnumType.STRING)
+    Gender gender;
+    Date joinedDate;
+    Date dob;
+    String address;
+    String contact;
+    String email;
+    @Enumerated(EnumType.STRING)
+    Role role;
+    List<FieldDTO> fields;
 }

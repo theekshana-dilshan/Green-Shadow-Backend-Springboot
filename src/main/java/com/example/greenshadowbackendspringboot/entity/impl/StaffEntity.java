@@ -1,10 +1,8 @@
 package com.example.greenshadowbackendspringboot.entity.impl;
 
-import com.example.greenshadowbackendspringboot.dto.impl.FieldDTO;
-import com.example.greenshadowbackendspringboot.dto.impl.VehicleDTO;
-import com.example.greenshadowbackendspringboot.entity.Gender;
-import com.example.greenshadowbackendspringboot.entity.Role;
 import com.example.greenshadowbackendspringboot.entity.SuperEntity;
+import com.example.greenshadowbackendspringboot.util.Gender;
+import com.example.greenshadowbackendspringboot.util.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,11 +11,10 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 import java.util.List;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Entity
-@Table(name = "staff")
 public class StaffEntity implements SuperEntity {
     @Id
     String id;
@@ -34,11 +31,11 @@ public class StaffEntity implements SuperEntity {
     @Enumerated(EnumType.STRING)
     Role role;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "staff_field",
-            joinColumns = @JoinColumn(name = "id"),
-            inverseJoinColumns = @JoinColumn(name = "fieldCode")
+            joinColumns = @JoinColumn(name = "staff_id"),
+            inverseJoinColumns = @JoinColumn(name = "field_code")
     )
     List<FieldEntity> fields;
 
@@ -48,9 +45,6 @@ public class StaffEntity implements SuperEntity {
     @OneToMany(mappedBy = "staff")
     List<EquipmentEntity> equipmentEntityList;
 
-    @OneToOne(mappedBy = "staffEntity")
+    @OneToOne(mappedBy ="staffEntity")
     LogEntity log;
-
-    public void setRole(Role role) {
-    }
 }

@@ -1,7 +1,7 @@
 package com.example.greenshadowbackendspringboot.controller;
 
 import com.example.greenshadowbackendspringboot.customStatusCodes.SelectedErrorStatus;
-import com.example.greenshadowbackendspringboot.dto.CropStatus;
+import com.example.greenshadowbackendspringboot.dto.CustomStatus;
 import com.example.greenshadowbackendspringboot.dto.impl.CropDTO;
 import com.example.greenshadowbackendspringboot.exception.CropNotFoundException;
 import com.example.greenshadowbackendspringboot.exception.DataPersistException;
@@ -37,7 +37,7 @@ public class CropController {
         }
     }
     @GetMapping(value = "/{cropCode}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public CropStatus getSelectedCrop(@PathVariable("cropCode") String cropCode){
+    public CustomStatus getSelectedCrop(@PathVariable("cropCode") String cropCode){
         if (!RegexProcess.cropIdMatcher(cropCode)) {
             return new SelectedErrorStatus(1,"Crop Code is not valid");
         }

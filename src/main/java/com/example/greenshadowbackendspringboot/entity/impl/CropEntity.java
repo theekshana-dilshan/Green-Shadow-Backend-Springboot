@@ -1,17 +1,18 @@
 package com.example.greenshadowbackendspringboot.entity.impl;
 
-import com.example.greenshadowbackendspringboot.dto.impl.FieldDTO;
+
 import com.example.greenshadowbackendspringboot.entity.SuperEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "cropEntity")
 public class CropEntity implements SuperEntity {
     @Id
     String cropCode;
@@ -22,12 +23,10 @@ public class CropEntity implements SuperEntity {
     String category;
     String season;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "fieldCode", nullable = false)
-    private FieldEntity fieldEntity;
+    @ManyToOne
+    @JoinColumn(name = "field_code" )
+    FieldEntity fieldEntity;
 
-
-
-    @OneToOne(mappedBy = "cropEntity" )
-    LogEntity log;
+    @OneToMany(mappedBy = "cropEntity", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    List<LogEntity> logEntityList;
 }

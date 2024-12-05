@@ -1,19 +1,19 @@
 package com.example.greenshadowbackendspringboot.dto.impl;
 
-import com.example.greenshadowbackendspringboot.dto.VehicleStatus;
+import com.example.greenshadowbackendspringboot.dto.CustomStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class VehicleDTO implements VehicleStatus {
-    private String vehicleCode;
-    private String licensePlateNumber;
-    private String vehicleCategory;
-    private String fuelType;
-    private String status;
-    private StaffDTO allocatedStaffMemberDetails;
-    private String remarks;
+public class VehicleDTO implements CustomStatus {
+    String vehicleCode;
+    String licensePlateNum;
+    String category;
+    String fuelType;
+    String status;
+    String remarks;
+    StaffDTO staff;
 }

@@ -2,7 +2,6 @@ package com.example.greenshadowbackendspringboot.service.impl;
 
 import com.example.greenshadowbackendspringboot.customStatusCodes.SelectedErrorStatus;
 import com.example.greenshadowbackendspringboot.dao.UserDao;
-import com.example.greenshadowbackendspringboot.dto.UserStatus;
 import com.example.greenshadowbackendspringboot.dto.impl.UserDTO;
 import com.example.greenshadowbackendspringboot.entity.impl.UserEntity;
 import com.example.greenshadowbackendspringboot.exception.DataPersistException;
@@ -40,13 +39,11 @@ public class UserServiceIMPL implements UserService {
     }
 
     @Override
-    public UserStatus getUser(String email) {
-        if(userDao.existsByEmail(email)){
-            UserEntity selectedUser = userDao.getReferenceById(email);
-            return mapping.toUserDTO(selectedUser);
-        }else {
-            return new SelectedErrorStatus(2, "User with id " + email + " not found");
+    public UserDTO getUser(String id) {
+        if (userDao.existsById(id)){
+            return mapping.toUserDTO(userDao.getReferenceById(id));
         }
+        return null;
     }
 
     @Override
@@ -65,12 +62,17 @@ public class UserServiceIMPL implements UserService {
         if (tempUser.isPresent()){
             tempUser.get().setEmail(userDTO.getEmail());
             tempUser.get().setPassword(userDTO.getPassword());
-            tempUser.get().setRole(userDTO.getRole());
+            tempUser.get().setUserRole(userDTO.getUserRole());
         }
     }
 
     @Override
     public UserDetailsService userDetailService() {
         return    userName-> userDao.findByEmail(userName).orElseThrow(()-> new UserNotFoundException("User not found"));
+    }
+
+    @Override
+    public UserDTO getActiveUsers() {
+        return mapping.toUserDTO(userDao.findByStatusTrue());
     }
 }

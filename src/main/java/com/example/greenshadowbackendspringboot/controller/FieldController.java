@@ -1,7 +1,7 @@
 package com.example.greenshadowbackendspringboot.controller;
 
 import com.example.greenshadowbackendspringboot.customStatusCodes.SelectedErrorStatus;
-import com.example.greenshadowbackendspringboot.dto.FieldStatus;
+import com.example.greenshadowbackendspringboot.dto.CustomStatus;
 import com.example.greenshadowbackendspringboot.dto.impl.FieldDTO;
 import com.example.greenshadowbackendspringboot.exception.DataPersistException;
 import com.example.greenshadowbackendspringboot.exception.FieldNotFoundException;
@@ -17,12 +17,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/field")
+@CrossOrigin
 public class FieldController {
 
     @Autowired
     private FieldService fieldService;
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> saveField(@RequestBody FieldDTO fieldDTO) {
         try {
@@ -37,7 +38,7 @@ public class FieldController {
         }
     }
     @GetMapping(value = "/{fieldCode}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public FieldStatus getSelectedField(@PathVariable ("fieldCode") String fieldCode){
+    public CustomStatus getSelectedField(@PathVariable ("fieldCode") String fieldCode){
         if (!RegexProcess.fieldIdMatcher(fieldCode)) {
             return new SelectedErrorStatus(1,"Field ID is not valid");
         }

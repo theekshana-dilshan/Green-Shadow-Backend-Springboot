@@ -2,18 +2,27 @@ package com.example.greenshadowbackendspringboot.service.impl;
 
 import com.example.greenshadowbackendspringboot.customStatusCodes.SelectedErrorStatus;
 import com.example.greenshadowbackendspringboot.dao.EquipmentDao;
-import com.example.greenshadowbackendspringboot.dto.EquipmentStatus;
+import com.example.greenshadowbackendspringboot.dto.CustomStatus;
 import com.example.greenshadowbackendspringboot.dto.impl.EquipmentDTO;
 import com.example.greenshadowbackendspringboot.entity.impl.EquipmentEntity;
+import com.example.greenshadowbackendspringboot.entity.impl.FieldEntity;
+import com.example.greenshadowbackendspringboot.entity.impl.StaffEntity;
 import com.example.greenshadowbackendspringboot.exception.DataPersistException;
 import com.example.greenshadowbackendspringboot.exception.EquipmentNotFoundException;
 import com.example.greenshadowbackendspringboot.service.EquipmentService;
 import com.example.greenshadowbackendspringboot.util.Mapping;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+import static org.yaml.snakeyaml.nodes.NodeId.mapping;
+
+@Service
+@Transactional
 public class EquipmentServiceIMPL implements EquipmentService {
 
     @Autowired
@@ -38,7 +47,7 @@ public class EquipmentServiceIMPL implements EquipmentService {
     }
 
     @Override
-    public EquipmentStatus getEquipment(String equipmentId) {
+    public CustomStatus getEquipment(String equipmentId) {
         if(equipmentDao.existsById(equipmentId)){
             var selectedEquipment = equipmentDao.getReferenceById(equipmentId);
             return equipmentMapping.toEquipmentDTO(selectedEquipment);
@@ -59,14 +68,28 @@ public class EquipmentServiceIMPL implements EquipmentService {
 
     @Override
     public void updateEquipment(String equipmentId, EquipmentDTO equipmentDTO) {
-        Optional<EquipmentEntity> findEquipment = equipmentDao.findById(equipmentId);
-        if (!findEquipment.isPresent()) {
-            throw new EquipmentNotFoundException("Equipment not found");
-        }else {
-            findEquipment.get().setName(equipmentDTO.getName());
-            findEquipment.get().setType(equipmentDTO.getType());
-            findEquipment.get().setStatus(equipmentDTO.getStatus());
-            findEquipment.get().setAssignedStaffDetails(equipmentDTO.getAssignedStaffDetails());
+        Optional<EquipmentEntity> byId = equipmentDao.findById(equipmentId);
+
+        if (byId.isPresent()) {
+            EquipmentEntity equipmentEntity = byId.get();
+
+            equipmentEntity.setName(equipmentDTO.getName());
+            equipmentEntity.setEquipmentType(equipmentDTO.getEquipmentType());
+            equipmentEntity.setStatus(equipmentDTO.getStatus());
+
+            if (equipmentDTO.getStaff() != null) {
+                StaffEntity staffEntity = equipmentMapping.toStaffEntity(equipmentDTO.getStaff());
+                equipmentEntity.setStaff(staffEntity);
+            }
+
+            if (equipmentDTO.getField() != null) {
+                FieldEntity fieldEntity = equipmentMapping.toFieldEntity(equipmentDTO.getField());
+                equipmentEntity.setField(fieldEntity);
+            }
+
+            equipmentDao.save(equipmentEntity);
+        } else {
+            throw new EntityNotFoundException("Equipment entity with ID " + equipmentId + " not found.");
         }
     }
 }

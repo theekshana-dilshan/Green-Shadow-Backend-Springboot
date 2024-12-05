@@ -1,7 +1,7 @@
 package com.example.greenshadowbackendspringboot.controller;
 
 import com.example.greenshadowbackendspringboot.customStatusCodes.SelectedErrorStatus;
-import com.example.greenshadowbackendspringboot.dto.VehicleStatus;
+import com.example.greenshadowbackendspringboot.dto.CustomStatus;
 import com.example.greenshadowbackendspringboot.dto.impl.VehicleDTO;
 import com.example.greenshadowbackendspringboot.exception.DataPersistException;
 import com.example.greenshadowbackendspringboot.exception.VehicleNotFoundException;
@@ -37,7 +37,7 @@ public class VehicleController {
         }
     }
     @GetMapping(value = "/{vehicleCode}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public VehicleStatus getSelectedVehicle(@PathVariable("vehicleCode") String vehicleCode){
+    public CustomStatus getSelectedVehicle(@PathVariable("vehicleCode") String vehicleCode){
         if (!RegexProcess.vehicleIdMatcher(vehicleCode)) {
             return new SelectedErrorStatus(1,"Vehicle ID is not valid");
         }

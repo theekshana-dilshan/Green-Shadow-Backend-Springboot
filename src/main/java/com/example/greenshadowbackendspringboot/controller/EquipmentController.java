@@ -1,7 +1,7 @@
 package com.example.greenshadowbackendspringboot.controller;
 
 import com.example.greenshadowbackendspringboot.customStatusCodes.SelectedErrorStatus;
-import com.example.greenshadowbackendspringboot.dto.EquipmentStatus;
+import com.example.greenshadowbackendspringboot.dto.CustomStatus;
 import com.example.greenshadowbackendspringboot.dto.impl.EquipmentDTO;
 import com.example.greenshadowbackendspringboot.exception.DataPersistException;
 import com.example.greenshadowbackendspringboot.exception.EquipmentNotFoundException;
@@ -36,7 +36,7 @@ public class EquipmentController {
         }
     }
     @GetMapping(value = "/{equipmentId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public EquipmentStatus getSelectedEquipment(@PathVariable ("equipmentId") String equipmentId){
+    public CustomStatus getSelectedEquipment(@PathVariable ("equipmentId") String equipmentId){
         if (!RegexProcess.equipmentIdMatcher(equipmentId)) {
             return new SelectedErrorStatus(1,"Equipment ID is not valid");
         }

@@ -1,16 +1,20 @@
 package com.example.greenshadowbackendspringboot.dto.impl;
 
-import com.example.greenshadowbackendspringboot.dto.UserStatus;
-import com.example.greenshadowbackendspringboot.entity.Role;
+import com.example.greenshadowbackendspringboot.dto.SuperDTO;
+import com.example.greenshadowbackendspringboot.util.Role;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class UserDTO implements UserStatus {
-    private String email;
-    private String password;
-    private  Role role;
+public class UserDTO implements SuperDTO {
+    String email;
+    String password;
+    @Enumerated(EnumType.STRING)
+    Role userRole;
+    boolean status;
 }

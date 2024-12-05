@@ -1,7 +1,7 @@
 package com.example.greenshadowbackendspringboot.controller;
 
 import com.example.greenshadowbackendspringboot.customStatusCodes.SelectedErrorStatus;
-import com.example.greenshadowbackendspringboot.dto.StaffStatus;
+import com.example.greenshadowbackendspringboot.dto.CustomStatus;
 import com.example.greenshadowbackendspringboot.dto.impl.StaffDTO;
 import com.example.greenshadowbackendspringboot.exception.DataPersistException;
 import com.example.greenshadowbackendspringboot.exception.StaffNotFoundException;
@@ -37,7 +37,7 @@ public class StaffController {
         }
     }
     @GetMapping(value = "/{staffId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public StaffStatus getSelectedStaff(@PathVariable("staffId") String staffId){
+    public CustomStatus getSelectedStaff(@PathVariable("staffId") String staffId){
         if (!RegexProcess.staffIdMatcher(staffId)) {
             return new SelectedErrorStatus(1,"Staff ID is not valid");
         }

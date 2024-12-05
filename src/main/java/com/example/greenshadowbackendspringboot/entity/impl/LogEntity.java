@@ -1,8 +1,5 @@
 package com.example.greenshadowbackendspringboot.entity.impl;
 
-import com.example.greenshadowbackendspringboot.dto.impl.CropDTO;
-import com.example.greenshadowbackendspringboot.dto.impl.FieldDTO;
-import com.example.greenshadowbackendspringboot.dto.impl.StaffDTO;
 import com.example.greenshadowbackendspringboot.entity.SuperEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,15 +7,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-import java.util.List;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Entity
-@Table(name = "monitorLog")
 public class LogEntity implements SuperEntity {
-
     @Id
     String logCode;
 
@@ -28,16 +22,15 @@ public class LogEntity implements SuperEntity {
     @Column(columnDefinition = "LONGTEXT")
     String observationImage;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "field_code", referencedColumnName = "fieldCode")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "field_code")
     FieldEntity fieldEntity;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "crop_code", referencedColumnName = "cropCode")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "crop_code")
     CropEntity cropEntity;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "staff_id", referencedColumnName = "id")
     StaffEntity staffEntity;
-
 }

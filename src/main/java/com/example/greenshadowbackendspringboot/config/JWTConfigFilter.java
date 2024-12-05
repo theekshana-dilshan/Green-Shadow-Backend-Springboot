@@ -2,12 +2,12 @@ package com.example.greenshadowbackendspringboot.config;
 
 import com.example.greenshadowbackendspringboot.service.JWTService;
 import com.example.greenshadowbackendspringboot.service.UserService;
+import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
@@ -36,7 +36,7 @@ public class JWTConfigFilter extends OncePerRequestFilter {
         }
         extractedJwtToken = initToken.substring(7);
         userEmail = jwtService.extractUserName(extractedJwtToken);
-       // user email
+        // user email
         if(StringUtils.isNotEmpty(userEmail) &&
                 SecurityContextHolder.getContext().getAuthentication() == null) {
             var userDetails =

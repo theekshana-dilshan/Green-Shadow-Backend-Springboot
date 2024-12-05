@@ -1,20 +1,21 @@
 package com.example.greenshadowbackendspringboot.entity.impl;
 
-import com.example.greenshadowbackendspringboot.dto.impl.StaffDTO;
 import com.example.greenshadowbackendspringboot.entity.SuperEntity;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Entity
-@Table(name = "vehicle")
 public class VehicleEntity implements SuperEntity {
     @Id
-    String code;
+    String vehicleCode;
     String licensePlateNum;
     String category;
     String fuelType;

@@ -1,8 +1,11 @@
 package com.example.greenshadowbackendspringboot.entity.impl;
 
-import com.example.greenshadowbackendspringboot.entity.Role;
 import com.example.greenshadowbackendspringboot.entity.SuperEntity;
-import jakarta.persistence.*;
+import com.example.greenshadowbackendspringboot.util.Role;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,47 +17,47 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Entity
-@Table(name = "user")
 public class UserEntity implements SuperEntity, UserDetails {
     @Id
-    private String email;
-    private String password;
+    String email;
+    String password;
     @Enumerated(EnumType.STRING)
-    private Role role;
+    Role userRole;
+    boolean status;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_"+role.name()));
+        authorities.add(new SimpleGrantedAuthority("ROLE_"+userRole.name()));
         return authorities;
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return email;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return UserDetails.super.isAccountNonExpired();
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+        return true;
     }
 }

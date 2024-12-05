@@ -1,19 +1,20 @@
 package com.example.greenshadowbackendspringboot.dto.impl;
 
-import com.example.greenshadowbackendspringboot.dto.CropStatus;
+
+import com.example.greenshadowbackendspringboot.dto.CustomStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class CropDTO implements CropStatus {
-    private String cropCode;
-    private String cropCommonName;
-    private String cropScientificName;
-    private String cropImage;
-    private String category;
-    private String cropSeason;
-    private FieldDTO field;
+public class CropDTO implements CustomStatus {
+    String cropCode;
+    String commonName;
+    String scientificName;
+    String image;
+    String category;
+    String season;
+    FieldDTO fieldDTO;
 }

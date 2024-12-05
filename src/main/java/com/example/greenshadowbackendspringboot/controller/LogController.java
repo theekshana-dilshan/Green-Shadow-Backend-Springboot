@@ -1,7 +1,7 @@
 package com.example.greenshadowbackendspringboot.controller;
 
 import com.example.greenshadowbackendspringboot.customStatusCodes.SelectedErrorStatus;
-import com.example.greenshadowbackendspringboot.dto.LogStatus;
+import com.example.greenshadowbackendspringboot.dto.CustomStatus;
 import com.example.greenshadowbackendspringboot.dto.impl.LogDTO;
 import com.example.greenshadowbackendspringboot.exception.DataPersistException;
 import com.example.greenshadowbackendspringboot.exception.LogNotFoundException;
@@ -37,7 +37,7 @@ public class LogController {
         }
     }
     @GetMapping(value = "/{logCode}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public LogStatus getSelectedLog(@PathVariable("logCode") String logCode){
+    public CustomStatus getSelectedLog(@PathVariable("logCode") String logCode){
         if (!RegexProcess.logIdMatcher(logCode)) {
             return new SelectedErrorStatus(1,"Log ID is not valid");
         }
