@@ -29,6 +29,6 @@ public class AppUtil {
     }
 
     public static String generateLogId(){
-        return "L-"+ UUID.randomUUID();
+        return "LOG-"+ UUID.randomUUID();
     }
 }
